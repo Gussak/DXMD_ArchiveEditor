@@ -411,7 +411,9 @@ public class MainGUI extends JPanel
     	//optionData.add(new BooleanOption(setUpLongAL(6578429, 6578453), setUpShortAL(1, 1), setUpShortAL(0, 0), "Aug Recharge Rate OFF", "Disables free initial augmentation RechargeRate", false));
     	//optionData.add(new BooleanOption(setUpLongAL(6580645, 6580649, 6580657), setUpShortAL(1, 1, 1), setUpShortAL(0, 0, 0), "Aug C. Defibrillator OFF", "Disables free initial augmentation CardiovertorDefibrillator", false));
     	optionData.add(new BooleanOption(setUpLongAL(6578429,6578453,6579061,6579085,6579109), setUpShortAL(1,1,1,1,1), setUpShortAL(0,0,0,0,0), "Aug Recharge Rate OFF", "Disables free initial augmentation RechargeRate", false)); //hint: 05 ... 01 near aug name for the 3 levels
-    	optionData.add(new BooleanOption(setUpLongAL(6580989,4787093,4787117), setUpShortAL(1, 1, 1), setUpShortAL(0, 0, 0), "Aug C. Defibrillator OFF", "Disables free initial augmentation CardiovertorDefibrillator", false)); //hint: 05 ... 01 near aug name for the 3 levels
+    	optionData.add(new BooleanOption(setUpLongAL(6580989,4787093,4787117), setUpShortAL(1,1,1), setUpShortAL(0,0,0), "Aug C. Defibrillator OFF", "Disables free initial augmentation CardiovertorDefibrillator", false)); //hint: 05 ... 01 near aug name for the 3 levels
+    	
+    	optionData.add(new BooleanOption(setUpLongAL(4570015,4570016), setUpShortAL(0xAA,0x42), setUpShortAL(0xAA,0x43), "BioCell Energy 100%", "How much BioCell recovers energy", false)); //hint: seek after 72C142AA
     }
     
     private ArrayList<Long> setUpLongAL(long ... input)
