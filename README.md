@@ -4,6 +4,9 @@ I consider this a generic binary mod merger tool.
 I am trying to expand it.
 This tool can also be used to merge binary patch mods to any other games or other files in DXMD.
 
+How to use: edit MainGUI.java then compile it with: javac MainGUI.java  
+Now drag MainGUI.class into a jar file containing all files here (that is just a zip renamed to .jar) and run it with OpenJDK11.
+
 CREDITS from https://www.nexusmods.com/deusexmankinddivided/mods/18
  
 	Credits and distribution permission
