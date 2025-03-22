@@ -384,11 +384,6 @@ public class MainGUI extends JPanel
     	optionData.add(new InventoryXOption(setUpLongAL(4951797), "Battle Rifle Width", "Sets the width of the battle rifle in the inventory (number of tiles). Range:0-16", 6));
     	optionData.add(new InventoryXOption(setUpLongAL(4886637), "Combat Rifle Width", "Sets the width of the combat rifle in the inventory (number of tiles). Range:0-16", 5));
     	
-    	//TODO: these tests failed, still did not guess the offset...
-    	//optionData.add(new InventoryXOption(setUpLongAL(5694417), "Ammo T.Dart Width", "Width of Tranquilizer Dart ammo box. Range:0-16", 2)); //binary pos hint:"Tranquilizer_Dart"+8
-    	//optionData.add(new InventoryXOption(setUpLongAL(7646673), "Ammo 10mm Regular Width", "Width of 10mm (pistol) Regular ammo box. Range:0-16", 2)); //binary pos hint:"10mm (pistol) Regular"+4
-    	//optionData.add(new InventoryXOption(setUpLongAL(7647561), "Ammo 10mm Emp Width", "Width of 10mm (pistol) Emp ammo box. Range:0-16", 2)); //binary pos hint:"10mm (pistol) Emp"+4
-    	
     	optionData.add(new ShortOption(setUpLongAL(7562693), "Typhoon Ammo Crafting Cost", "Sets the amount weapons parts needed to craft a 3-pack of Typhoon ammo. Range:0-65535", 75));
     	optionData.add(new ShortOption(setUpLongAL(7557853), "Mine Template Crafting Cost", "Sets the amount weapons parts needed to craft a mine template. Range:0-65535", 75));
     	optionData.add(new ShortOption(setUpLongAL(5865517), "Biocell Crafting Cost", "Sets the amount weapons parts needed to craft a biocell. Range:0-65535", 120));
@@ -406,11 +401,17 @@ public class MainGUI extends JPanel
     	optionData.add(new BooleanOption(setUpLongAL(7413191, 7413192), setUpShortAL(4, 66), setUpShortAL(0, 0), "No Takedown Cost", "Makes takedowns have no energy consumption.", false));
     	optionData.add(new BooleanOption(setUpLongAL(6611045, 7589029, 7589797, 7704685, 7718621, 7719573, 7721117, 7722581, 7723565, 7727101),  setUpShortAL(10, 10, 10, 10, 10, 10, 10, 10, 10, 10), setUpShortAL(0, 0, 0, 0, 0, 0, 0, 0, 0, 0), 
     		"Augs Non-Experimental", "Makes all augmentations non-experimental, removing need for neuroplasticity calibrator.", false));
-    	//optionData.add(new BooleanOption(setUpLongAL(6577695, 6577696), setUpShortAL(12, 66), setUpShortAL(65, 67), "Biocell Fully Charges", "Every Biocell will fully charge the energy bar.", false)); // FAILED, did not increase biocell recharging capacity; After comparing original with mod: https://www.nexusmods.com/deusexmankinddivided/mods/24?tab=description
     	
-    	//optionData.add(new BooleanOption(setUpLongAL(6578429, 6578453), setUpShortAL(1, 1), setUpShortAL(0, 0), "Aug Recharge Rate OFF", "Disables free initial augmentation RechargeRate", false));
-    	//optionData.add(new BooleanOption(setUpLongAL(6580645, 6580649, 6580657), setUpShortAL(1, 1, 1), setUpShortAL(0, 0, 0), "Aug C. Defibrillator OFF", "Disables free initial augmentation CardiovertorDefibrillator", false));
-    	optionData.add(new BooleanOption(setUpLongAL(6578429,6578453,6579061,6579085,6579109), setUpShortAL(1,1,1,1,1), setUpShortAL(0,0,0,0,0), "Aug Recharge Rate OFF", "Disables free initial augmentation RechargeRate", false)); //hint: 05 ... 01 near aug name for the 3 levels
+    	//TODO: these tests failed, still did not guess the offset. It could be height tho
+    	//optionData.add(new InventoryXOption(setUpLongAL(5694417), "Ammo T.Dart Width", "Width of Tranquilizer Dart ammo box. Range:0-16", 2)); //binary pos hint:"Tranquilizer_Dart"+8
+    	//optionData.add(new InventoryXOption(setUpLongAL(7646673), "Ammo 10mm Regular Width", "Width of 10mm (pistol) Regular ammo box. Range:0-16", 2)); //binary pos hint:"10mm (pistol) Regular"+4
+    	//optionData.add(new InventoryXOption(setUpLongAL(7647561), "Ammo 10mm Emp Width", "Width of 10mm (pistol) Emp ammo box. Range:0-16", 2)); //binary pos hint:"10mm (pistol) Emp"+4
+    	
+    	///////                                                                                       ////
+    	//////                                                                                       /////
+    	// based on hints from: https://www.grognougnou.com/mods-tutorials-deus-ex-mankind-divided.html //
+    	////                                                                                       ///////
+    	optionData.add(new BooleanOption(setUpLongAL(6578429,6578453,6579061,6579085,6579109), setUpShortAL(1,1,1,1,1), setUpShortAL(0,0,0,0,0), "Aug Recharge Rate OFF", "Disables augmentation RechargeRate lvl1 even if it shows being active", false)); //hint: 05 ... 01 near aug name for the 3 levels
     	optionData.add(new BooleanOption(setUpLongAL(6580989,4787093,4787117), setUpShortAL(1,1,1), setUpShortAL(0,0,0), "Aug C. Defibrillator OFF", "Disables free initial augmentation CardiovertorDefibrillator", false)); //hint: 05 ... 01 near aug name for the 3 levels
     	
     	optionData.add(new BooleanOption(setUpLongAL(4570015,4570016), setUpShortAL(0xAA,0x42), setUpShortAL(0xAA,0x43), "BioCell Energy 100%", "How much BioCell recovers energy", false)); //hint: seek after 72C142AA

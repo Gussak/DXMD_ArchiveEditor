@@ -13,7 +13,7 @@ public class Launcher
     	jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);          
         
         jf.add(new MainGUI());
-        jf.setResizable(false);        
+        jf.setResizable(true);        
         jf.setSize(850, 700);
         jf.setVisible(true);    
     }
