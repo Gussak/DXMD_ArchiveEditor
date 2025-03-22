@@ -102,24 +102,27 @@ public class MainGUI extends JPanel
 			btn_Select.addActionListener(actionEvent -> 
 			{	
 				System.out.println("INIT:"+strGameFile);
-				JFileChooser fileChooser = new JFileChooser(strGameFile); //todob is not being initialized with file param.. :(
-					int result = fileChooser.showOpenDialog(null);
+				JFileChooser fileChooser = new JFileChooser(); //do not initialize file param in the constructor
+				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+				fileChooser.setSelectedFile(new File(strGameFile));
+				int result = fileChooser.showOpenDialog(null);
 
-					if (result == JFileChooser.APPROVE_OPTION)
+				if (result == JFileChooser.APPROVE_OPTION)
+				{
+					jtf_FileAddress.setText(fileChooser.getSelectedFile().getAbsolutePath());
+					System.out.println("NEWCHOSEN:"+jtf_FileAddress.getText());
+					try 
 					{
-						jtf_FileAddress.setText(fileChooser.getSelectedFile().getAbsolutePath());
-						try 
-						{
-							FileAnalyzer.analyze(new File(fileChooser.getSelectedFile().getAbsolutePath()), optionData);
-							enableOptions();
-							applyPreset("Current Values");
-							strGameFile = jtf_FileAddress.getText();
-						} 
-						catch (IOException e) 
-						{
-							e.printStackTrace();
-						}
+						FileAnalyzer.analyze(new File(fileChooser.getSelectedFile().getAbsolutePath()), optionData);
+						enableOptions();
+						applyPreset("Current Values");
+						strGameFile = jtf_FileAddress.getText();
+					} 
+					catch (IOException e) 
+					{
+						e.printStackTrace();
 					}
+				}
 			});
 			add(btn_Select);
 			
