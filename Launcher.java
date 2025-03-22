@@ -14,8 +14,8 @@ public class Launcher
 			
 			MainGUI mg = new MainGUI();
 			try{
-				mg.strGameFile = args[0];
-				System.out.println("PARAM:"+mg.strGameFile);
+				mg.setGameFile(args[0]);
+				System.out.println("PARAM:"+args[0]);
 			}catch(Exception e){}
 			
 			jf.add(mg);

@@ -37,10 +37,25 @@ public class FileAnalyzer
 			else
 			{
 				accessGameFile.seek(option.getAddresses().get(0)); // Operating under the assumption that any changes already made will be done by this program
+				
+				/* INFO: this checks only the first value of the checkbox(boolean like) array, so a big 16bits value or bigger could fail if the first byte remains unchanged
 				if (signedByteToUShort(accessGameFile.readByte()) == ((BooleanOption) option).getSpecificValueFalseVals(0))
 					((BooleanOption) option).setCurrentFileValue(false);
 				else
 					((BooleanOption) option).setCurrentFileValue(true);
+				*/
+				
+				// tries to match all bytes meaning the check box is ON, if any fails, check box goes OFF
+				boolean bArrayFullyMatches=true;
+				for(int i=0; i < ((BooleanOption) option).getAddressesSize(); i++)
+				{
+					if (signedByteToUShort(accessGameFile.readByte()) != ((BooleanOption) option).getSpecificValueTrueVals(i))
+					{
+						bArrayFullyMatches=false;
+						break;
+					}
+				}
+				((BooleanOption) option).setCurrentFileValue(bArrayFullyMatches);
 			}
 		}
 		

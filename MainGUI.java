@@ -33,22 +33,31 @@ public class MainGUI extends JPanel
 	
 	private int valueEntry_x, valueEntry_y;
 	
-	private float getEnv(String strEnvVar) {
+	private float getEnvFloat(String strEnvVar) {
 		float f;
 		try {
 			f = Float.parseFloat(System.getenv(strEnvVar));
+			System.out.println("ENVVAR["+strEnvVar+"]:"+f);
 			return f;
 		} catch (Exception e) {
 			//e.printStackTrace();
 			return 0.0f;
 		}
 	}
-	private float fontScaleEnv=getEnv("fScale"); //ex.: fScale=0.75f java -jar ...
+	private boolean getEnvBool(String strEnvVar) {
+		String strVal=System.getenv(strEnvVar);
+		System.out.println("ENVVAR["+strEnvVar+"]:"+strVal);
+		if(strVal == "true")return true;
+		return false;
+	}
+	private float fontScaleEnv=getEnvFloat("fScale"); //ex.: fScale=0.75f java -jar ...
 	private float fontScale = fontScaleEnv > 0.0f ? fontScaleEnv : 1.0f;
 	private int fontA=(int)(20*fontScale);
 	private int fontB=(int)(14*fontScale);
 	private int fontC=(int)(18*fontScale);
 	private int fontD=(int)(24*fontScale);
+	private String strGameFile;
+	private Boolean bDarkTheme = getEnvBool("bDarkTheme");
 	
 	private JPanel scrollPanel;
 	private JButton btn_Select, btn_Default, btn_File, btn_Apply;   
@@ -57,7 +66,7 @@ public class MainGUI extends JPanel
 	private JTextField jtf_FileAddress;     
 	private JTextArea descTextArea;
 	
-	public String strGameFile;
+	public void setGameFile(String str) { strGameFile = str; }
 	
 	private void prepareForRun() throws IOException
 	{
@@ -78,201 +87,201 @@ public class MainGUI extends JPanel
 	
 	public MainGUI() 
 	{
-			setLayout(null);  
-			optionData = new ArrayList<Option>();
-			entryValues = new ArrayList<JComponent>();
-			entryLabels = new ArrayList<JLabel>();
-			invalidValues = new ArrayList<JTextField>();
-			fillOptionData();
-			
-			scrollPanel = new JPanel();
-			scrollPanel.setLayout(null);
-			int ScrollPanelHeight = (optionData.size() % 2 == 1) ? (10 + (20 * (optionData.size() + 1))) : (10 + (20 * optionData.size()));
-			scrollPanel.setPreferredSize(new Dimension(810, ScrollPanelHeight)); // parameters of Dimension constructor are: x, y
-						 
-			
-			lbl_gameAddress = new JLabel("Address of Game.layer.1.all.archive File:");
-			lbl_gameAddress.setBounds(10, 0, 480, 50);
-			lbl_gameAddress.setFont(new Font("Courier New", Font.BOLD, fontA));
-			add(lbl_gameAddress);
-			
-			btn_Select = new JButton("File Selector");
-			btn_Select.setFont(new Font("Courier New", Font.BOLD, fontA));
-			btn_Select.setBounds(660, 10, 175, 35); // left edge from left side of window, top edge from top of window, width, height
-			btn_Select.addActionListener(actionEvent -> 
-			{	
-				System.out.println("INIT:"+strGameFile);
-				JFileChooser fileChooser = new JFileChooser(); //do not initialize file param in the constructor
-				fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-				fileChooser.setSelectedFile(new File(strGameFile));
-				int result = fileChooser.showOpenDialog(null);
+		setLayout(null);  
+		optionData = new ArrayList<Option>();
+		entryValues = new ArrayList<JComponent>();
+		entryLabels = new ArrayList<JLabel>();
+		invalidValues = new ArrayList<JTextField>();
+		fillOptionData();
+		
+		scrollPanel = new JPanel();
+		scrollPanel.setLayout(null);
+		int ScrollPanelHeight = (optionData.size() % 2 == 1) ? (10 + (20 * (optionData.size() + 1))) : (10 + (20 * optionData.size()));
+		scrollPanel.setPreferredSize(new Dimension(810, ScrollPanelHeight)); // parameters of Dimension constructor are: x, y
+					 
+		
+		lbl_gameAddress = new JLabel("Address of Game.layer.1.all.archive File:");
+		lbl_gameAddress.setBounds(10, 0, 480, 50);
+		lbl_gameAddress.setFont(new Font("Courier New", Font.BOLD, fontA));
+		add(lbl_gameAddress);
+		
+		btn_Select = new JButton("File Selector");
+		btn_Select.setFont(new Font("Courier New", Font.BOLD, fontA));
+		btn_Select.setBounds(660, 10, 175, 35); // left edge from left side of window, top edge from top of window, width, height
+		btn_Select.addActionListener(actionEvent -> 
+		{	
+			System.out.println("INIT:"+strGameFile);
+			JFileChooser fileChooser = new JFileChooser(); //do not initialize file param in the constructor
+			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+			fileChooser.setSelectedFile(new File(strGameFile));
+			int result = fileChooser.showOpenDialog(null);
 
-				if (result == JFileChooser.APPROVE_OPTION)
-				{
-					jtf_FileAddress.setText(fileChooser.getSelectedFile().getAbsolutePath());
-					System.out.println("NEWCHOSEN:"+jtf_FileAddress.getText());
-					try 
-					{
-						FileAnalyzer.analyze(new File(fileChooser.getSelectedFile().getAbsolutePath()), optionData);
-						enableOptions();
-						applyPreset("Current Values");
-						strGameFile = jtf_FileAddress.getText();
-					} 
-					catch (IOException e) 
-					{
-						e.printStackTrace();
-					}
-				}
-			});
-			add(btn_Select);
-			
-			jtf_FileAddress = new JTextField();
-			jtf_FileAddress.setEditable(false);
-			jtf_FileAddress.setBackground(Color.WHITE);
-			jtf_FileAddress.setBounds(10, 50, 825, 30);
-			jtf_FileAddress.setFont(new Font("Courier New", Font.PLAIN, fontB));
-			add(jtf_FileAddress);                        
-																		
-			
-			valueEntry_x = 10;
-			valueEntry_y = 10;
-			
-			for (int i = 0; i < optionData.size(); i++)
+			if (result == JFileChooser.APPROVE_OPTION)
 			{
-				Option currentOption = optionData.get(i);
-				
-				if (currentOption instanceof NumericOption) // Add a JTextField for a numeric input
-				{
-					JTextField tempTF = new JTextField();
-					tempTF.setBounds(valueEntry_x, valueEntry_y, 65, (int)(40*fontScale));
-					tempTF.setFont(new Font("Courier New", Font.BOLD, fontA));
-					tempTF.setVisible(true);
-					tempTF.setEnabled(false);
-					tempTF.getDocument().addDocumentListener(new DocumentListener() 
-					{
-							public void changedUpdate(DocumentEvent e){}
-							public void removeUpdate(DocumentEvent e) 
-							{
-								checkInputValidity(tempTF, ((NumericOption) currentOption).getMaxValue());
-							}
-							public void insertUpdate(DocumentEvent e) 
-							{
-								checkInputValidity(tempTF, ((NumericOption) currentOption).getMaxValue());
-							}
-					});
-					tempTF.addMouseListener(new java.awt.event.MouseAdapter()
-						{
-								public void mouseEntered(java.awt.event.MouseEvent evt) 
-								{
-									descTextArea.setText(currentOption.getOptionDesc());
-								}
-								public void mouseExited(java.awt.event.MouseEvent evt)
-								{
-									descTextArea.setText("");
-								}
-						});
-					scrollPanel.add(tempTF);
-						entryValues.add(tempTF);
-				}
-				else // Add a checkbox for a boolean input
-				{
-					JCheckBox tempCB = new JCheckBox();
-					tempCB.setBounds(valueEntry_x + 25, valueEntry_y, 40, (int)(40*fontScale));
-					tempCB.setVisible(true);
-					tempCB.setEnabled(false);
-					tempCB.addMouseListener(new java.awt.event.MouseAdapter()
-						{
-								public void mouseEntered(java.awt.event.MouseEvent evt) 
-								{
-									descTextArea.setText(currentOption.getOptionDesc());
-								}
-								public void mouseExited(java.awt.event.MouseEvent evt)
-								{
-									descTextArea.setText("");
-								}
-						});
-					scrollPanel.add(tempCB);
-						entryValues.add(tempCB);
-				}
-					
-					JLabel tempLbl = new JLabel(currentOption.getOptionName());
-					tempLbl.setBounds(valueEntry_x + 75, valueEntry_y, 300, (int)(40*fontScale));
-//            tempLbl.setSize(100, 100);
-					tempLbl.setFont(new Font("Courier New", Font.PLAIN, fontA));
-					tempLbl.setVisible(true);
-					tempLbl.setForeground(Color.GRAY);
-					tempLbl.addMouseListener(new java.awt.event.MouseAdapter()
-					{
-							public void mouseEntered(java.awt.event.MouseEvent evt) 
-							{
-								descTextArea.setText(currentOption.getOptionDesc());
-							}
-							public void mouseExited(java.awt.event.MouseEvent evt)
-							{
-								descTextArea.setText("");
-							}
-					}); 
-					scrollPanel.add(tempLbl);
-					entryLabels.add(tempLbl);
-					
-					incrementCheckBoxLocation();
-			}
-																							 
-
-			scrollPane = new JScrollPane(scrollPanel);
-			scrollPane.getVerticalScrollBar().setUnitIncrement(10); // Scroll speed. Default of 1
-			scrollPane.setBounds(10, 100, 830, 370);
-			add(scrollPane);
-			
-			
-			// Description text area section
-			descTextArea = new JTextArea();
-			descTextArea.setBounds(10, 500, 825, 85);
-			descTextArea.setFont(new Font("Courier New", Font.PLAIN, fontC));
-			descTextArea.setLineWrap(true);
-			descTextArea.setWrapStyleWord(true); // Needed for the line wrap to actually work
-			descTextArea.setFocusable(false);
-			add(descTextArea);                       
-			
-			
-			btn_Default = new JButton("Default Values");
-			btn_Default.setFont(new Font("Courier New", Font.BOLD, fontC));
-			btn_Default.setBounds(10, 600, 220, (int)(50*fontScale)); // left edge from left side of window, top edge from top of window, width, height
-			btn_Default.setEnabled(false);
-			btn_Default.addActionListener(actionEvent ->
-			{        	
-				applyPreset("Default Values");     
-			});        
-			add(btn_Default);
-			
-			
-			btn_File = new JButton("Current File Values");
-			btn_File.setFont(new Font("Courier New", Font.BOLD, fontC));
-			btn_File.setBounds(240, 600, 220, (int)(50*fontScale)); // left edge from left side of window, top edge from top of window, width, height
-			btn_File.setEnabled(false);
-			btn_File.addActionListener(actionEvent ->
-			{        	
-				applyPreset("Current Values");
-			});        
-			add(btn_File);
-			
-			
-			btn_Apply = new JButton("Apply");
-			btn_Apply.setFont(new Font("Courier New", Font.BOLD, fontD));
-			btn_Apply.setBounds(670, 600, 150, (int)(50*fontScale)); // left edge from left side of window, top edge from top of window, width, height
-			btn_Apply.addActionListener(actionEvent ->
-			{        	
+				jtf_FileAddress.setText(fileChooser.getSelectedFile().getAbsolutePath());
+				System.out.println("NEWCHOSEN:"+jtf_FileAddress.getText());
 				try 
 				{
-					prepareForRun();
-				}
+					FileAnalyzer.analyze(new File(fileChooser.getSelectedFile().getAbsolutePath()), optionData);
+					enableOptions();
+					applyPreset("Current Values");
+					strGameFile = jtf_FileAddress.getText();
+				} 
 				catch (IOException e) 
-				{			
+				{
 					e.printStackTrace();
-				}        
-			});        
-			handleApplyButtonEnabled();
-			add(btn_Apply);
+				}
+			}
+		});
+		add(btn_Select);
+		
+		jtf_FileAddress = new JTextField();
+		jtf_FileAddress.setEditable(false);
+		jtf_FileAddress.setBackground(bDarkTheme?Color.BLACK:Color.WHITE);
+		jtf_FileAddress.setBounds(10, 50, 825, 30);
+		jtf_FileAddress.setFont(new Font("Courier New", Font.PLAIN, fontB));
+		add(jtf_FileAddress);
+		
+		
+		valueEntry_x = 10;
+		valueEntry_y = 10;
+		
+		for (int i = 0; i < optionData.size(); i++)
+		{
+			Option currentOption = optionData.get(i);
+			
+			if (currentOption instanceof NumericOption) // Add a JTextField for a numeric input
+			{
+				JTextField tempTF = new JTextField();
+				tempTF.setBounds(valueEntry_x, valueEntry_y, 65, (int)(40*fontScale));
+				tempTF.setFont(new Font("Courier New", Font.BOLD, fontA));
+				tempTF.setVisible(true);
+				tempTF.setEnabled(false);
+				tempTF.getDocument().addDocumentListener(new DocumentListener() 
+					{
+						public void changedUpdate(DocumentEvent e){}
+						public void removeUpdate(DocumentEvent e) 
+						{
+							checkInputValidity(tempTF, ((NumericOption) currentOption).getMaxValue());
+						}
+						public void insertUpdate(DocumentEvent e) 
+						{
+							checkInputValidity(tempTF, ((NumericOption) currentOption).getMaxValue());
+						}
+					});
+				tempTF.addMouseListener(new java.awt.event.MouseAdapter()
+					{
+						public void mouseEntered(java.awt.event.MouseEvent evt) 
+						{
+							descTextArea.setText(currentOption.getOptionDesc());
+						}
+						public void mouseExited(java.awt.event.MouseEvent evt)
+						{
+							descTextArea.setText("");
+						}
+					});
+				scrollPanel.add(tempTF);
+				entryValues.add(tempTF);
+			}
+			else // Add a checkbox for a boolean input
+			{
+				JCheckBox tempCB = new JCheckBox();
+				tempCB.setBounds(valueEntry_x + 25, valueEntry_y, 40, (int)(40*fontScale));
+				tempCB.setVisible(true);
+				tempCB.setEnabled(false);
+				tempCB.addMouseListener(new java.awt.event.MouseAdapter()
+					{
+						public void mouseEntered(java.awt.event.MouseEvent evt) 
+						{
+							descTextArea.setText(currentOption.getOptionDesc());
+						}
+						public void mouseExited(java.awt.event.MouseEvent evt)
+						{
+							descTextArea.setText("");
+						}
+					});
+				scrollPanel.add(tempCB);
+				entryValues.add(tempCB);
+			}
+				
+			JLabel tempLbl = new JLabel(currentOption.getOptionName());
+			tempLbl.setBounds(valueEntry_x + 75, valueEntry_y, 300, (int)(40*fontScale));
+//            tempLbl.setSize(100, 100);
+			tempLbl.setFont(new Font("Courier New", Font.PLAIN, fontA));
+			tempLbl.setVisible(true);
+			tempLbl.setForeground(Color.GRAY);
+			tempLbl.addMouseListener(new java.awt.event.MouseAdapter()
+			{
+				public void mouseEntered(java.awt.event.MouseEvent evt) 
+				{
+					descTextArea.setText(currentOption.getOptionDesc());
+				}
+				public void mouseExited(java.awt.event.MouseEvent evt)
+				{
+					descTextArea.setText("");
+				}
+			}); 
+			scrollPanel.add(tempLbl);
+			entryLabels.add(tempLbl);
+			
+			incrementCheckBoxLocation();
+		}
+		
+		
+		scrollPane = new JScrollPane(scrollPanel);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(10); // Scroll speed. Default of 1
+		scrollPane.setBounds(10, 100, 830, 370);
+		add(scrollPane);
+		
+		
+		// Description text area section
+		descTextArea = new JTextArea();
+		descTextArea.setBounds(10, 500, 825, 85);
+		descTextArea.setFont(new Font("Courier New", Font.PLAIN, fontC));
+		descTextArea.setLineWrap(true);
+		descTextArea.setWrapStyleWord(true); // Needed for the line wrap to actually work
+		descTextArea.setFocusable(false);
+		add(descTextArea);                       
+		
+		
+		btn_Default = new JButton("Default Values");
+		btn_Default.setFont(new Font("Courier New", Font.BOLD, fontC));
+		btn_Default.setBounds(10, 600, 220, (int)(50*fontScale)); // left edge from left side of window, top edge from top of window, width, height
+		btn_Default.setEnabled(false);
+		btn_Default.addActionListener(actionEvent ->
+		{        	
+			applyPreset("Default Values");     
+		});        
+		add(btn_Default);
+		
+		
+		btn_File = new JButton("Current File Values");
+		btn_File.setFont(new Font("Courier New", Font.BOLD, fontC));
+		btn_File.setBounds(240, 600, 220, (int)(50*fontScale)); // left edge from left side of window, top edge from top of window, width, height
+		btn_File.setEnabled(false);
+		btn_File.addActionListener(actionEvent ->
+		{        	
+			applyPreset("Current Values");
+		});        
+		add(btn_File);
+		
+		
+		btn_Apply = new JButton("Apply");
+		btn_Apply.setFont(new Font("Courier New", Font.BOLD, fontD));
+		btn_Apply.setBounds(670, 600, 150, (int)(50*fontScale)); // left edge from left side of window, top edge from top of window, width, height
+		btn_Apply.addActionListener(actionEvent ->
+		{        	
+			try 
+			{
+				prepareForRun();
+			}
+			catch (IOException e) 
+			{			
+				e.printStackTrace();
+			}        
+		});        
+		handleApplyButtonEnabled();
+		add(btn_Apply);
 	}
 
 	private void checkInputValidity(JTextField tempTF, int optionMax)
@@ -290,7 +299,7 @@ public class MainGUI extends JPanel
 			if (invalidValues.contains(tempTF))
 			{
 				invalidValues.remove(tempTF);
-				tempTF.setForeground(Color.BLACK);
+				tempTF.setForeground(bDarkTheme?Color.WHITE:Color.BLACK);
 			}            		
 		} 
 		handleApplyButtonEnabled();
@@ -321,20 +330,20 @@ public class MainGUI extends JPanel
 		
 		for (JLabel tempLabel : entryLabels)
 		{
-			tempLabel.setForeground(Color.BLACK);
+			tempLabel.setForeground(bDarkTheme?Color.WHITE:Color.BLACK);
 		}
 		
 		btn_Default.setEnabled(true);
 		btn_File.setEnabled(true);
-	}    
+	}
 	
 	private void applyPreset(String preset)
 	{ 
 		int value;
-	if (preset.equals("Current Values"))
-		value = 0;
-	else
-		value = 1;
+		if (preset.equals("Current Values"))
+			value = 0;
+		else
+			value = 1;
 		
 			for (int i = 0; i < entryValues.size(); i++)
 			{
@@ -435,11 +444,10 @@ public class MainGUI extends JPanel
 		//////                                                                                       /////
 		// based on hints from: https://www.grognougnou.com/mods-tutorials-deus-ex-mankind-divided.html //
 		////                                                                                       ///////
-		optionData.add(new BooleanOption(setUpLongAL(6578429,6578453,6579061,6579085,6579109), setUpShortAL(1,1,1,1,1), setUpShortAL(0,0,0,0,0), "Aug Energy Recharge Rate OFF", "Disables augmentation RechargeRate lvl1 even if it shows being active", false)); //hint: 05 ... 01 near aug name for the 3 levels
-		optionData.add(new BooleanOption(setUpLongAL(6580989,4787093,4787117), setUpShortAL(1,1,1), setUpShortAL(0,0,0), "Aug C. Defibrillator OFF", "Disables free initial augmentation CardiovertorDefibrillator", false)); //hint: 05 ... 01 near aug name for the 3 levels
+		optionData.add(new BooleanOption(setUpLongAL(6578429,6578453,6579061,6579085,6579109), setUpShortAL(1,1,1,1,1), setUpShortAL(0,0,0,0,0), "Aug Energy Recharge Rate OFF", "Disables augmentation energy RechargeRate lvl1 even if it shows being active", false)); //hint: 05 ... 01 near aug name for the 3 levels
+		optionData.add(new BooleanOption(setUpLongAL(6580989,4787093,4787117), setUpShortAL(1,1,1), setUpShortAL(0,0,0), "Aug C. Defibrillator OFF", "Disables free initial augmentation CardiovertorDefibrillator, that is the auto healing", false)); //hint: 05 ... 01 near aug name for the 3 levels
 		
-		//optionData.add(new BooleanOption(setUpLongAL(4570015,4570016), setUpShortAL(0xAA,0x42), setUpShortAL(0xAA,0x43), "BioCell Energy 100%", "BioCell recovers 100% of the energy bar if available", false)); //hint: seek after 72C142AA
-		optionData.add(new BooleanOption(setUpLongAL(4570016), setUpShortAL(0x42), setUpShortAL(0x43), "BioCell Energy 100%", "BioCell recovers 100% of the energy bar if available", false)); //hint: seek after 72C142AA
+		optionData.add(new BooleanOption(setUpLongAL(4570015,4570016), setUpShortAL(0xAA,0x42), setUpShortAL(0xAA,0x43), "BioCell Energy 100%", "BioCell recovers 100% of the energy bar if available", false)); //hint: seek after 72C142AA. The full value is 2 bytes, 16bits (at least)
 	}
 	
 	private ArrayList<Long> setUpLongAL(long ... input)

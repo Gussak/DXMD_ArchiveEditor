@@ -73,4 +73,9 @@ public class BooleanOption extends Option
 		return trueVals.get(index);
 	}
 	
+	public int getAddressesSize()
+	{
+		return addresses.size();
+	}
+	
 }
