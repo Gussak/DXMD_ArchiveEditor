@@ -1,8 +1,9 @@
 #!/bin/bash
 
-jar cvf ../DXMD_ArchiveEditor.jar *
+set -x
+
+jar cfve ../DXMD_ArchiveEditor.jar Launcher *
 chmod -v +x ../DXMD_ArchiveEditor.jar
 
-if ! java -jar ../DXMD_ArchiveEditor.jar;then
-	java -cp ../DXMD_ArchiveEditor.jar Launcher
-fi
+java -jar ../DXMD_ArchiveEditor.jar
+#failsafe: java -cp ../DXMD_ArchiveEditor.jar Launcher
