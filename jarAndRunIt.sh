@@ -2,6 +2,8 @@
 
 set -x
 
+javac *.java
+
 jar cfve ../DXMD_ArchiveEditor.jar Launcher *
 chmod -v +x ../DXMD_ArchiveEditor.jar
 

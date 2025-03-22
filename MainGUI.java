@@ -33,6 +33,12 @@ public class MainGUI extends JPanel
 	
 	private int valueEntry_x, valueEntry_y;
 	
+	private float fontScale=0.8f; //TODO make this a param or env var
+	private int fontA=(int)(20*fontScale);
+	private int fontB=(int)(14*fontScale);
+	private int fontC=(int)(18*fontScale);
+	private int fontD=(int)(24*fontScale);
+	
 	private JPanel scrollPanel;
     private JButton btn_Select, btn_Default, btn_File, btn_Apply;   
     private JLabel lbl_gameAddress;
@@ -74,11 +80,11 @@ public class MainGUI extends JPanel
         
         lbl_gameAddress = new JLabel("Address of Game.layer.1.all.archive File:");
         lbl_gameAddress.setBounds(10, 0, 480, 50);
-        lbl_gameAddress.setFont(new Font("Courier New", Font.BOLD, 20));
+        lbl_gameAddress.setFont(new Font("Courier New", Font.BOLD, fontA));
         add(lbl_gameAddress);
         
         btn_Select = new JButton("File Selector");
-        btn_Select.setFont(new Font("Courier New", Font.BOLD, 20));
+        btn_Select.setFont(new Font("Courier New", Font.BOLD, fontA));
         btn_Select.setBounds(660, 10, 175, 35); // left edge from left side of window, top edge from top of window, width, height
         btn_Select.addActionListener(actionEvent -> 
         {
@@ -106,7 +112,7 @@ public class MainGUI extends JPanel
         jtf_FileAddress.setEditable(false);
         jtf_FileAddress.setBackground(Color.WHITE);
         jtf_FileAddress.setBounds(10, 50, 825, 30);
-        jtf_FileAddress.setFont(new Font("Courier New", Font.PLAIN, 14));
+        jtf_FileAddress.setFont(new Font("Courier New", Font.PLAIN, fontB));
         add(jtf_FileAddress);                        
                                       
         
@@ -121,7 +127,7 @@ public class MainGUI extends JPanel
         	{
 	        	JTextField tempTF = new JTextField();
 	        	tempTF.setBounds(valueEntry_x, valueEntry_y, 65, 40);
-	        	tempTF.setFont(new Font("Courier New", Font.BOLD, 20));
+	        	tempTF.setFont(new Font("Courier New", Font.BOLD, fontA));
 	        	tempTF.setVisible(true);
 	        	tempTF.setEnabled(false);
 	        	tempTF.getDocument().addDocumentListener(new DocumentListener() 
@@ -174,7 +180,7 @@ public class MainGUI extends JPanel
             JLabel tempLbl = new JLabel(currentOption.getOptionName());
             tempLbl.setBounds(valueEntry_x + 75, valueEntry_y, 300, 40);
 //            tempLbl.setSize(100, 100);
-            tempLbl.setFont(new Font("Courier New", Font.PLAIN, 20));
+            tempLbl.setFont(new Font("Courier New", Font.PLAIN, fontA));
             tempLbl.setVisible(true);
             tempLbl.setForeground(Color.GRAY);
             tempLbl.addMouseListener(new java.awt.event.MouseAdapter()
@@ -204,7 +210,7 @@ public class MainGUI extends JPanel
         // Description text area section
         descTextArea = new JTextArea();
         descTextArea.setBounds(10, 500, 825, 85);
-        descTextArea.setFont(new Font("Courier New", Font.PLAIN, 18));
+        descTextArea.setFont(new Font("Courier New", Font.PLAIN, fontC));
         descTextArea.setLineWrap(true);
         descTextArea.setWrapStyleWord(true); // Needed for the line wrap to actually work
         descTextArea.setFocusable(false);
@@ -212,7 +218,7 @@ public class MainGUI extends JPanel
         
         
         btn_Default = new JButton("Default Values");
-        btn_Default.setFont(new Font("Courier New", Font.BOLD, 18));
+        btn_Default.setFont(new Font("Courier New", Font.BOLD, fontC));
         btn_Default.setBounds(10, 600, 220, 50); // left edge from left side of window, top edge from top of window, width, height
         btn_Default.setEnabled(false);
         btn_Default.addActionListener(actionEvent ->
@@ -223,7 +229,7 @@ public class MainGUI extends JPanel
         
         
         btn_File = new JButton("Current File Values");
-        btn_File.setFont(new Font("Courier New", Font.BOLD, 18));
+        btn_File.setFont(new Font("Courier New", Font.BOLD, fontC));
         btn_File.setBounds(240, 600, 220, 50); // left edge from left side of window, top edge from top of window, width, height
         btn_File.setEnabled(false);
         btn_File.addActionListener(actionEvent ->
@@ -234,7 +240,7 @@ public class MainGUI extends JPanel
         
         
         btn_Apply = new JButton("Apply");
-        btn_Apply.setFont(new Font("Courier New", Font.BOLD, 24));
+        btn_Apply.setFont(new Font("Courier New", Font.BOLD, fontD));
         btn_Apply.setBounds(670, 600, 150, 50); // left edge from left side of window, top edge from top of window, width, height
         btn_Apply.addActionListener(actionEvent ->
         {        	
