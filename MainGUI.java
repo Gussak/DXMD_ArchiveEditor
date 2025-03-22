@@ -57,6 +57,8 @@ public class MainGUI extends JPanel
 	private JTextField jtf_FileAddress;     
 	private JTextArea descTextArea;
 	
+	public String strGameFile;
+	
 	private void prepareForRun() throws IOException
 	{
 		String gameFileLocation = jtf_FileAddress.getText();
@@ -98,25 +100,27 @@ public class MainGUI extends JPanel
 			btn_Select.setFont(new Font("Courier New", Font.BOLD, fontA));
 			btn_Select.setBounds(660, 10, 175, 35); // left edge from left side of window, top edge from top of window, width, height
 			btn_Select.addActionListener(actionEvent -> 
-			{
-				JFileChooser fileChooser = new JFileChooser();        
+			{	
+				System.out.println("INIT:"+strGameFile);
+				JFileChooser fileChooser = new JFileChooser(strGameFile); //todob is not being initialized with file param.. :(
 					int result = fileChooser.showOpenDialog(null);
 
 					if (result == JFileChooser.APPROVE_OPTION)
 					{
 						jtf_FileAddress.setText(fileChooser.getSelectedFile().getAbsolutePath());
 						try 
-						{            	            		
-				FileAnalyzer.analyze(new File(fileChooser.getSelectedFile().getAbsolutePath()), optionData);	
+						{
+							FileAnalyzer.analyze(new File(fileChooser.getSelectedFile().getAbsolutePath()), optionData);
 							enableOptions();
 							applyPreset("Current Values");
-			} 
+							strGameFile = jtf_FileAddress.getText();
+						} 
 						catch (IOException e) 
 						{
-				e.printStackTrace();
-			}            	
+							e.printStackTrace();
+						}
 					}
-			});        
+			});
 			add(btn_Select);
 			
 			jtf_FileAddress = new JTextField();
@@ -230,7 +234,7 @@ public class MainGUI extends JPanel
 			
 			btn_Default = new JButton("Default Values");
 			btn_Default.setFont(new Font("Courier New", Font.BOLD, fontC));
-			btn_Default.setBounds(10, 600, 220, 50); // left edge from left side of window, top edge from top of window, width, height
+			btn_Default.setBounds(10, 600, 220, (int)(50*fontScale)); // left edge from left side of window, top edge from top of window, width, height
 			btn_Default.setEnabled(false);
 			btn_Default.addActionListener(actionEvent ->
 			{        	
@@ -241,7 +245,7 @@ public class MainGUI extends JPanel
 			
 			btn_File = new JButton("Current File Values");
 			btn_File.setFont(new Font("Courier New", Font.BOLD, fontC));
-			btn_File.setBounds(240, 600, 220, 50); // left edge from left side of window, top edge from top of window, width, height
+			btn_File.setBounds(240, 600, 220, (int)(50*fontScale)); // left edge from left side of window, top edge from top of window, width, height
 			btn_File.setEnabled(false);
 			btn_File.addActionListener(actionEvent ->
 			{        	
@@ -252,7 +256,7 @@ public class MainGUI extends JPanel
 			
 			btn_Apply = new JButton("Apply");
 			btn_Apply.setFont(new Font("Courier New", Font.BOLD, fontD));
-			btn_Apply.setBounds(670, 600, 150, 50); // left edge from left side of window, top edge from top of window, width, height
+			btn_Apply.setBounds(670, 600, 150, (int)(50*fontScale)); // left edge from left side of window, top edge from top of window, width, height
 			btn_Apply.addActionListener(actionEvent ->
 			{        	
 				try 
@@ -431,7 +435,8 @@ public class MainGUI extends JPanel
 		optionData.add(new BooleanOption(setUpLongAL(6578429,6578453,6579061,6579085,6579109), setUpShortAL(1,1,1,1,1), setUpShortAL(0,0,0,0,0), "Aug Energy Recharge Rate OFF", "Disables augmentation RechargeRate lvl1 even if it shows being active", false)); //hint: 05 ... 01 near aug name for the 3 levels
 		optionData.add(new BooleanOption(setUpLongAL(6580989,4787093,4787117), setUpShortAL(1,1,1), setUpShortAL(0,0,0), "Aug C. Defibrillator OFF", "Disables free initial augmentation CardiovertorDefibrillator", false)); //hint: 05 ... 01 near aug name for the 3 levels
 		
-		optionData.add(new BooleanOption(setUpLongAL(4570015,4570016), setUpShortAL(0xAA,0x42), setUpShortAL(0xAA,0x43), "BioCell Energy 100%", "BioCell recovers 100% of the energy bar if available", false)); //hint: seek after 72C142AA
+		//optionData.add(new BooleanOption(setUpLongAL(4570015,4570016), setUpShortAL(0xAA,0x42), setUpShortAL(0xAA,0x43), "BioCell Energy 100%", "BioCell recovers 100% of the energy bar if available", false)); //hint: seek after 72C142AA
+		optionData.add(new BooleanOption(setUpLongAL(4570016), setUpShortAL(0x42), setUpShortAL(0x43), "BioCell Energy 100%", "BioCell recovers 100% of the energy bar if available", false)); //hint: seek after 72C142AA
 	}
 	
 	private ArrayList<Long> setUpLongAL(long ... input)
