@@ -35,17 +35,11 @@ public class GameDataDXMD extends GameData
 		optionData.add(new ShortOption(setUpLongAL(5398989, 5403189, 5404309, 5405781), "XP for Non-Lethal", "Sets the amount of XP received from a non-lethal takedown (merciful soul). Range:0-65535", 20));
 		
 		
-		addSection("Item's price: Other");
+		addSection("Item's price: Aug Ammo");
 		
-		optionData.add(new ShortOption(setUpLongAL(7736149), "Praxis Shop Cost", "Sets the amount credits a Praxis kit will cost in a store. Range:0-65535", 10000));
-		optionData.add(new ShortOption(setUpLongAL(4570325), "Biocell Shop Cost", "Sets the amount credits a biocell will cost in a store. Range:0-65535", 200));
-		optionData.add(new ShortOption(setUpLongAL(5796261), "Hypostim Shop Cost", "Sets the amount credits a hypostim will cost in a store. Range:0-65535", 150));
-		optionData.add(new ShortOption(setUpLongAL(4913021), "Painkiller Shop Cost", "Sets the amount credits a painkiller bottle will cost in a store. Range:0-65535", 50));
-		optionData.add(new ShortOption(setUpLongAL(6119021), "Multitool Shop Cost", "Sets the amount credits a Multitool will cost in a store. Range:0-65535", 800));
 		optionData.add(new ShortOption(setUpLongAL(7558933), "Typhoon Ammo Shop Cost", "Sets the amount credits a single Typhoon ammo will cost in a store. This is multiplied by 3 or 5 for the packs. Range:0-65535", 500));
 		optionData.add(new ShortOption(setUpLongAL(5852637), "Tesla Ammo Shop Cost", "Sets the amount credits a single Tesla ammo will cost in a store. This is multiplied by 8 for the pack. Range:0-65535", 200));
 		optionData.add(new ShortOption(setUpLongAL(5853429), "Nanoblade Ammo Shop Cost", "Sets the amount credits a single Nanoblade ammo will cost in a store. This is multiplied by 8 for the pack. Range:0-65535", 200));
-		optionData.add(new ShortOption(setUpLongAL(5865149), "Weapon Part Shop Cost", "Sets the amount credits a single weapon part will cost in a store. This is multiplied for the pack. Range:0-65535", 5));
 		
 		
 		addSection("Item's price: Software");
@@ -56,6 +50,16 @@ public class GameDataDXMD extends GameData
 		optionData.add(new ShortOption(setUpLongAL(6791181), "Datascan Shop Cost", "Sets the amount credits a Datascan software will cost in a store. Range:0-65535", 200));
 		optionData.add(new ShortOption(setUpLongAL(6791853), "Stop! Shop Cost", "Sets the amount credits a Stop! software will cost in a store. Range:0-65535", 200));
 		optionData.add(new ShortOption(setUpLongAL(6792525), "Overclock Shop Cost", "Sets the amount credits an Overclock software will cost in a store. Range:0-65535", 200));
+		
+		
+		addSection("Item's price: Other");
+		
+		optionData.add(new ShortOption(setUpLongAL(7736149), "Praxis Shop Cost", "Sets the amount credits a Praxis kit will cost in a store. Range:0-65535", 10000));
+		optionData.add(new ShortOption(setUpLongAL(4570325), "Biocell Shop Cost", "Sets the amount credits a biocell will cost in a store. Range:0-65535", 200));
+		optionData.add(new ShortOption(setUpLongAL(5796261), "Hypostim Shop Cost", "Sets the amount credits a hypostim will cost in a store. Range:0-65535", 150));
+		optionData.add(new ShortOption(setUpLongAL(4913021), "Painkiller Shop Cost", "Sets the amount credits a painkiller bottle will cost in a store. Range:0-65535", 50));
+		optionData.add(new ShortOption(setUpLongAL(6119021), "Multitool Shop Cost", "Sets the amount credits a Multitool will cost in a store. Range:0-65535", 800));
+		optionData.add(new ShortOption(setUpLongAL(5865149), "Weapon Part Shop Cost", "Sets the amount credits a single weapon part will cost in a store. This is multiplied for the pack. Range:0-65535", 5));
 		
 		
 		addSection("Inventory: Items' Width");
@@ -69,16 +73,6 @@ public class GameDataDXMD extends GameData
 		optionData.add(new InventoryXOption(setUpLongAL(4886637), "Combat Rifle Width", "Sets the width of the combat rifle in the inventory (number of tiles). Range:0-16", 5));
 		
 		
-		addSection("Items' Craft Cost");
-		
-		optionData.add(new ShortOption(setUpLongAL(7562693), "Typhoon Ammo Crafting Cost", "Sets the amount weapons parts needed to craft a 3-pack of Typhoon ammo. Range:0-65535", 75));
-		optionData.add(new ShortOption(setUpLongAL(7557853), "Mine Template Crafting Cost", "Sets the amount weapons parts needed to craft a mine template. Range:0-65535", 75));
-		optionData.add(new ShortOption(setUpLongAL(5865517), "Biocell Crafting Cost", "Sets the amount weapons parts needed to craft a biocell. Range:0-65535", 120));
-		optionData.add(new ShortOption(setUpLongAL(6119341), "Multi-Tool Crafting Cost", "Sets the amount weapons parts needed to craft a Multi-Tool. Range:0-65535", 120));
-		optionData.add(new ShortOption(setUpLongAL(6172733), "Nanoblade Crafting Cost", "Sets the amount weapons parts needed to craft a Nanoblade ammo pack. Range:0-65535", 75));
-		optionData.add(new ShortOption(setUpLongAL(7441693), "Tesla Ammo Crafting Cost", "Sets the amount weapons parts needed to craft a Tesla ammo pack. Range:0-65535", 75));
-		
-		
 		addSection("Inventory: Items' Stack Size");
 		
 		optionData.add(new ShortOption(setUpLongAL(4264429, 4265549, 4267085, 4268245, 4269245, 4270501, 4285101, 4286237, 4287013, 4288053, 4288885, 4290013, 6615853, 6616941, 6966957, 7525853), "Ammo Stack", "Sets the max inventory stack size of weapon ammo (grenade launcher excluded). Range:0-65535", 200));
@@ -87,6 +81,16 @@ public class GameDataDXMD extends GameData
 		optionData.add(new ShortOption(setUpLongAL(4570277), "Biocell Stack", "Sets the max inventory stack size of Biocells. Range:0-65535", 25));
 		optionData.add(new ShortOption(setUpLongAL(4912973), "Painkiller Stack", "Sets the max inventory stack size of painkillers. Range:0-65535", 25));
 		optionData.add(new ShortOption(setUpLongAL(5796213), "Hypostim Stack", "Sets the max inventory stack size of hypostims. Range:0-65535", 25));    	
+		
+		
+		addSection("Items' Craft Cost");
+		
+		optionData.add(new ShortOption(setUpLongAL(7562693), "Typhoon Ammo Crafting Cost", "Sets the amount weapons parts needed to craft a 3-pack of Typhoon ammo. Range:0-65535", 75));
+		optionData.add(new ShortOption(setUpLongAL(7557853), "Mine Template Crafting Cost", "Sets the amount weapons parts needed to craft a mine template. Range:0-65535", 75));
+		optionData.add(new ShortOption(setUpLongAL(5865517), "Biocell Crafting Cost", "Sets the amount weapons parts needed to craft a biocell. Range:0-65535", 120));
+		optionData.add(new ShortOption(setUpLongAL(6119341), "Multi-Tool Crafting Cost", "Sets the amount weapons parts needed to craft a Multi-Tool. Range:0-65535", 120));
+		optionData.add(new ShortOption(setUpLongAL(6172733), "Nanoblade Crafting Cost", "Sets the amount weapons parts needed to craft a Nanoblade ammo pack. Range:0-65535", 75));
+		optionData.add(new ShortOption(setUpLongAL(7441693), "Tesla Ammo Crafting Cost", "Sets the amount weapons parts needed to craft a Tesla ammo pack. Range:0-65535", 75));
 		
 		
 		addSection("Special Toggles List");

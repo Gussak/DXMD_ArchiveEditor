@@ -9,6 +9,7 @@ chmod -v +x ../DXMD_ArchiveEditor.jar
 
 # windows dark theme would be: -Dswing.defaultlaf=com.sun.java.swing.plaf.windows.WindowsLookAndFeel
 # dark theme needs both -D... param and bDarkTheme=true
+# fScale=0.65 is the minimum
 	bDarkTheme=true \
 	fScale=0.65 \
 	java \
