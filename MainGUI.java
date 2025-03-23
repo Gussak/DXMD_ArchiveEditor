@@ -97,7 +97,7 @@ public class MainGUI extends JPanel
 		entryValues = new ArrayList<JComponent>();
 		entryLabels = new ArrayList<JLabel>();
 		invalidValues = new ArrayList<JTextField>();
-		fillOptionData();
+		fillOptionDataDXMD();
 		
 		scrollPanel = new JPanel();
 		scrollPanel.setLayout(null);
@@ -212,8 +212,8 @@ public class MainGUI extends JPanel
 			{
 				//scrollPanel.add(new JSeparator(SwingConstants.VERTICAL));
 				//scrollPanel.add(new JLabel(currentOption.getOptionName()));
-				scrollPanel.add(new JLabel("<><><><><><>"));
-				entryValues.add(new JLabel("<><><><><><>"));
+				//scrollPanel.add(new JLabel("<><><><><><>"));
+				//entryValues.add(new JLabel("<><><><><><>"));
 			}
 				
 			JLabel tempLbl = new JLabel(currentOption.getOptionName());
@@ -391,8 +391,10 @@ public class MainGUI extends JPanel
 			btn_Apply.setEnabled(true);
 	}
 	
-	private void fillOptionData()
+	private void fillOptionDataDXMD()
 	{
+		optionData.add(new SectionLabelOption("_______ Experience Gain _______"));
+		
 		// Note: final parameter given should be the default value
 		optionData.add(new ShortOption(setUpLongAL(5401405), "XP for lvl. 1 Hack", "Sets the amount of XP received from hacking a level 1 device. Range:0-65535", 25));
 		optionData.add(new ShortOption(setUpLongAL(5401429), "XP for lvl. 2 Hack", "Sets the amount of XP received from hacking a level 2 device. Range:0-65535", 50));
@@ -403,6 +405,8 @@ public class MainGUI extends JPanel
 		
 		optionData.add(new ShortOption(setUpLongAL(5399013, 5403213, 5404333, 5405805), "XP for Headshot", "Sets the amount of XP received from a headshot kill. Range:0-65535", 10));
 		optionData.add(new ShortOption(setUpLongAL(5398989, 5403189, 5404309, 5405781), "XP for Non-Lethal", "Sets the amount of XP received from a non-lethal takedown (merciful soul). Range:0-65535", 20));
+		
+		optionData.add(new SectionLabelOption("_______ Item's price _______"));
 		
 		optionData.add(new ShortOption(setUpLongAL(7736149), "Praxis Shop Cost", "Sets the amount credits a Praxis kit will cost in a store. Range:0-65535", 10000));
 		optionData.add(new ShortOption(setUpLongAL(4570325), "Biocell Shop Cost", "Sets the amount credits a biocell will cost in a store. Range:0-65535", 200));
@@ -421,6 +425,15 @@ public class MainGUI extends JPanel
 		optionData.add(new ShortOption(setUpLongAL(6791853), "Stop! Shop Cost", "Sets the amount credits a Stop! software will cost in a store. Range:0-65535", 200));
 		optionData.add(new ShortOption(setUpLongAL(6792525), "Overclock Shop Cost", "Sets the amount credits an Overclock software will cost in a store. Range:0-65535", 200));
 		
+		optionData.add(new ShortOption(setUpLongAL(7562693), "Typhoon Ammo Crafting Cost", "Sets the amount weapons parts needed to craft a 3-pack of Typhoon ammo. Range:0-65535", 75));
+		optionData.add(new ShortOption(setUpLongAL(7557853), "Mine Template Crafting Cost", "Sets the amount weapons parts needed to craft a mine template. Range:0-65535", 75));
+		optionData.add(new ShortOption(setUpLongAL(5865517), "Biocell Crafting Cost", "Sets the amount weapons parts needed to craft a biocell. Range:0-65535", 120));
+		optionData.add(new ShortOption(setUpLongAL(6119341), "Multi-Tool Crafting Cost", "Sets the amount weapons parts needed to craft a Multi-Tool. Range:0-65535", 120));
+		optionData.add(new ShortOption(setUpLongAL(6172733), "Nanoblade Crafting Cost", "Sets the amount weapons parts needed to craft a Nanoblade ammo pack. Range:0-65535", 75));
+		optionData.add(new ShortOption(setUpLongAL(7441693), "Tesla Ammo Crafting Cost", "Sets the amount weapons parts needed to craft a Tesla ammo pack. Range:0-65535", 75));
+		
+		optionData.add(new SectionLabelOption("_______ Inventory: Items' Width _______"));
+		
 		optionData.add(new InventoryXOption(setUpLongAL(6784805), "Sniper Width", "Sets the width of the sniper rifle in the inventory (number of tiles). Range:0-16", 7));
 		optionData.add(new InventoryXOption(setUpLongAL(4936557), "Tranquilizer Rifle Width", "Sets the width of the tranquilizer rifle in the inventory (number of tiles). Range:0-16", 7));
 		optionData.add(new InventoryXOption(setUpLongAL(4987389, 6754613), "Shotgun Width", "Sets the width of the shotgun in the inventory (number of tiles). Range:0-16", 5));
@@ -429,12 +442,7 @@ public class MainGUI extends JPanel
 		optionData.add(new InventoryXOption(setUpLongAL(4951797), "Battle Rifle Width", "Sets the width of the battle rifle in the inventory (number of tiles). Range:0-16", 6));
 		optionData.add(new InventoryXOption(setUpLongAL(4886637), "Combat Rifle Width", "Sets the width of the combat rifle in the inventory (number of tiles). Range:0-16", 5));
 		
-		optionData.add(new ShortOption(setUpLongAL(7562693), "Typhoon Ammo Crafting Cost", "Sets the amount weapons parts needed to craft a 3-pack of Typhoon ammo. Range:0-65535", 75));
-		optionData.add(new ShortOption(setUpLongAL(7557853), "Mine Template Crafting Cost", "Sets the amount weapons parts needed to craft a mine template. Range:0-65535", 75));
-		optionData.add(new ShortOption(setUpLongAL(5865517), "Biocell Crafting Cost", "Sets the amount weapons parts needed to craft a biocell. Range:0-65535", 120));
-		optionData.add(new ShortOption(setUpLongAL(6119341), "Multi-Tool Crafting Cost", "Sets the amount weapons parts needed to craft a Multi-Tool. Range:0-65535", 120));
-		optionData.add(new ShortOption(setUpLongAL(6172733), "Nanoblade Crafting Cost", "Sets the amount weapons parts needed to craft a Nanoblade ammo pack. Range:0-65535", 75));
-		optionData.add(new ShortOption(setUpLongAL(7441693), "Tesla Ammo Crafting Cost", "Sets the amount weapons parts needed to craft a Tesla ammo pack. Range:0-65535", 75));
+		optionData.add(new SectionLabelOption("_______ Inventory: Items Stack Size _______"));
 		
 		optionData.add(new ShortOption(setUpLongAL(4264429, 4265549, 4267085, 4268245, 4269245, 4270501, 4285101, 4286237, 4287013, 4288053, 4288885, 4290013, 6615853, 6616941, 6966957, 7525853), "Ammo Stack", "Sets the max inventory stack size of weapon ammo (grenade launcher excluded). Range:0-65535", 200));
 		optionData.add(new ShortOption(setUpLongAL(4282117, 4282861, 4283605, 4284349), "Grenade Ammo Stack", "Sets the max inventory stack size of grenade launcher ammo. Range:0-65535", 10));
@@ -443,7 +451,7 @@ public class MainGUI extends JPanel
 		optionData.add(new ShortOption(setUpLongAL(4912973), "Painkiller Stack", "Sets the max inventory stack size of painkillers. Range:0-65535", 25));
 		optionData.add(new ShortOption(setUpLongAL(5796213), "Hypostim Stack", "Sets the max inventory stack size of hypostims. Range:0-65535", 25));    	
 		
-		optionData.add(new SectionLabelOption("_______ Toggle List _______"));
+		optionData.add(new SectionLabelOption("_______ Special Toggles List _______"));
 		
 		optionData.add(new BooleanOption(setUpLongAL(7413191, 7413192), setUpShortAL(4, 66), setUpShortAL(0, 0), "No Takedown Cost", "Makes takedowns have no energy consumption.", false));
 		optionData.add(new BooleanOption(setUpLongAL(6611045, 7589029, 7589797, 7704685, 7718621, 7719573, 7721117, 7722581, 7723565, 7727101),  setUpShortAL(10, 10, 10, 10, 10, 10, 10, 10, 10, 10), setUpShortAL(0, 0, 0, 0, 0, 0, 0, 0, 0, 0), 
