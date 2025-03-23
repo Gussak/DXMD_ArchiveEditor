@@ -210,7 +210,7 @@ public class MainGUI extends JPanel
 			}
 			else if (currentOption instanceof SectionLabelOption) // dummy, just a section separator
 			{
-				//
+				entryValues.add(new JLabel("DUMMY"));
 			}
 				
 			JLabel tempLbl = new JLabel(currentOption.getOptionName());
@@ -430,13 +430,6 @@ public class MainGUI extends JPanel
 		optionData.add(new ShortOption(setUpLongAL(6791853), "Stop! Shop Cost", "Sets the amount credits a Stop! software will cost in a store. Range:0-65535", 200));
 		optionData.add(new ShortOption(setUpLongAL(6792525), "Overclock Shop Cost", "Sets the amount credits an Overclock software will cost in a store. Range:0-65535", 200));
 		
-		optionData.add(new ShortOption(setUpLongAL(7562693), "Typhoon Ammo Crafting Cost", "Sets the amount weapons parts needed to craft a 3-pack of Typhoon ammo. Range:0-65535", 75));
-		optionData.add(new ShortOption(setUpLongAL(7557853), "Mine Template Crafting Cost", "Sets the amount weapons parts needed to craft a mine template. Range:0-65535", 75));
-		optionData.add(new ShortOption(setUpLongAL(5865517), "Biocell Crafting Cost", "Sets the amount weapons parts needed to craft a biocell. Range:0-65535", 120));
-		optionData.add(new ShortOption(setUpLongAL(6119341), "Multi-Tool Crafting Cost", "Sets the amount weapons parts needed to craft a Multi-Tool. Range:0-65535", 120));
-		optionData.add(new ShortOption(setUpLongAL(6172733), "Nanoblade Crafting Cost", "Sets the amount weapons parts needed to craft a Nanoblade ammo pack. Range:0-65535", 75));
-		optionData.add(new ShortOption(setUpLongAL(7441693), "Tesla Ammo Crafting Cost", "Sets the amount weapons parts needed to craft a Tesla ammo pack. Range:0-65535", 75));
-		
 		
 		addSection("_______ Inventory: Items' Width _______");
 		
@@ -448,6 +441,15 @@ public class MainGUI extends JPanel
 		optionData.add(new InventoryXOption(setUpLongAL(4951797), "Battle Rifle Width", "Sets the width of the battle rifle in the inventory (number of tiles). Range:0-16", 6));
 		optionData.add(new InventoryXOption(setUpLongAL(4886637), "Combat Rifle Width", "Sets the width of the combat rifle in the inventory (number of tiles). Range:0-16", 5));
 		
+		
+		addSection("_______ Items' Craft Cost _______");
+		
+		optionData.add(new ShortOption(setUpLongAL(7562693), "Typhoon Ammo Crafting Cost", "Sets the amount weapons parts needed to craft a 3-pack of Typhoon ammo. Range:0-65535", 75));
+		optionData.add(new ShortOption(setUpLongAL(7557853), "Mine Template Crafting Cost", "Sets the amount weapons parts needed to craft a mine template. Range:0-65535", 75));
+		optionData.add(new ShortOption(setUpLongAL(5865517), "Biocell Crafting Cost", "Sets the amount weapons parts needed to craft a biocell. Range:0-65535", 120));
+		optionData.add(new ShortOption(setUpLongAL(6119341), "Multi-Tool Crafting Cost", "Sets the amount weapons parts needed to craft a Multi-Tool. Range:0-65535", 120));
+		optionData.add(new ShortOption(setUpLongAL(6172733), "Nanoblade Crafting Cost", "Sets the amount weapons parts needed to craft a Nanoblade ammo pack. Range:0-65535", 75));
+		optionData.add(new ShortOption(setUpLongAL(7441693), "Tesla Ammo Crafting Cost", "Sets the amount weapons parts needed to craft a Tesla ammo pack. Range:0-65535", 75));
 		
 		addSection("_______ Inventory: Items Stack Size _______");
 		
