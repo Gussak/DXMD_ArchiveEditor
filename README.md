@@ -1,11 +1,14 @@
 # DXMD_ArchiveEditor
 
-I consider this a generic binary mod merger tool.
-I am trying to expand it.
-This tool can also be used to merge binary patch mods to any other games or other files in DXMD.
+I consider this a generic binary mod merger tool.  
+I am trying to expand it.  
+This tool can also be used to merge binary patch mods to any other games or other files in DXMD.  
 
-How to use: edit MainGUI.java then compile it with: javac MainGUI.java  
-Now drag MainGUI.class into a jar file containing all files here (that is just a zip renamed to .jar) and run it with OpenJDK11.
+How to improve it: edit MainGUI.java then compile it with: javac MainGUI.java  
+Now drag MainGUI.class into a jar file containing all files here (that is just a zip renamed to .jar).
+Or run ./jarAndRunIt.sh in linux or jarAndRunIt.bat in windows
+
+Run it with OpenJDK11: java -jar DXMD_ArchiveEditor.jar
 
 CREDITS from https://www.nexusmods.com/deusexmankinddivided/mods/18
  

@@ -52,7 +52,9 @@ public class MainGUI extends JPanel
 		}
 	}
 	private boolean getEnvBool(String strEnvVar) {
-		String strVal=System.getenv(strEnvVar);
+		String strVal="false";
+		try { strVal=System.getenv(strEnvVar); }catch(Exception e){}
+		if(strVal == null) strVal = "false";
 		System.out.println("ENVVAR["+strEnvVar+"]:"+strVal);
 		if(strVal.equals("true"))return true;
 		return false;
@@ -73,7 +75,7 @@ public class MainGUI extends JPanel
 	
 	private float fontScale=getEnvFloat("fScale",0.65f,1000.0f); //help:evnvar TODO:ISSUE: less than 0.65f will mess text field values, may be fixable
 	
-	private String strGameFile;
+	private String strGameFile = "";
 	private Boolean bDarkTheme = getEnvBool("bDarkTheme"); //help:evnvar true or false
 	
 	private JPanel scrollPanel;
@@ -83,7 +85,11 @@ public class MainGUI extends JPanel
 	private JTextField jtf_FileAddress;     
 	private JTextArea descTextArea;
 	
-	public void setGameFile(String str) { strGameFile = str; }
+	public void setGameFile(String str) {
+		strGameFile = str;
+		if(strGameFile == null)
+			strGameFile = "";
+	}
 	
 	private void prepareForRun() throws IOException
 	{
@@ -141,7 +147,8 @@ public class MainGUI extends JPanel
 			System.out.println("INIT:"+strGameFile);
 			JFileChooser fileChooser = new JFileChooser(); //do not initialize file param in the constructor
 			fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-			fileChooser.setSelectedFile(new File(strGameFile));
+			if(!strGameFile.isEmpty())
+				fileChooser.setSelectedFile(new File(strGameFile));
 			int result = fileChooser.showOpenDialog(null);
 
 			if (result == JFileChooser.APPROVE_OPTION)
@@ -243,7 +250,7 @@ public class MainGUI extends JPanel
 			tempLbl.setVisible(true);
 			tempLbl.setForeground(Color.GRAY);
 			if(!currentOption.isData())
-				tempLbl.setForeground(Color.CYAN);
+				tempLbl.setForeground(bDarkTheme ? Color.CYAN : Color.BLUE);
 			tempLbl.addMouseListener(new java.awt.event.MouseAdapter()
 			{
 				public void mouseEntered(java.awt.event.MouseEvent evt) 
