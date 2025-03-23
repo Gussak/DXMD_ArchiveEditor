@@ -6,11 +6,11 @@ This tool can also be used to merge binary patch mods to any other games or othe
 
 .How to improve it: edit MainGUI.java fillOptionDataDXMD() database,  
 then compile it with: `javac MainGUI.java`  
-.Now drag MainGUI.class into the jar file (that is just a zip renamed to .jar),  
+.Now drag MainGUI.class and MainGUI$1.class ... into the jar file (that is just a zip renamed to .jar),  
 or run `./jarAndRunIt.sh` in linux  
 or `jarAndRunIt.bat` in windows (ISSUE: help needed, I dont know how to code that file but should be equivalent of what is at jarAndRunIt.sh)  
 
-Run it with OpenJDK11: java -jar DXMD_ArchiveEditor.jar
+Run it with OpenJDK11: `java -jar DXMD_ArchiveEditor.jar`  
 
 CREDITS from https://www.nexusmods.com/deusexmankinddivided/mods/18
  
