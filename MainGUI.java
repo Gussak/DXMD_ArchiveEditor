@@ -210,10 +210,7 @@ public class MainGUI extends JPanel
 			}
 			else if (currentOption instanceof SectionLabelOption) // dummy, just a section separator
 			{
-				//if(i%2==1) {
-					//scrollPanel.add(new JLabel(""));
-					//entryLabels.add(new JLabel(""));
-				//}
+				//
 			}
 				
 			JLabel tempLbl = new JLabel(currentOption.getOptionName());
@@ -235,19 +232,6 @@ public class MainGUI extends JPanel
 			}); 
 			scrollPanel.add(tempLbl);
 			entryLabels.add(tempLbl);
-			
-			//if (currentOption instanceof SectionLabelOption) // dummy, just a section separator
-			//{
-				//if(i%2==0) {
-					//JLabel tempLblSect = new JLabel(".");
-					//tempLblSect.setBounds(valueEntry_x + 75, valueEntry_y, 300, (int)(40*fontScale));
-					//tempLblSect.setFont(new Font("Courier New", Font.PLAIN, fontA));
-					//tempLblSect.setVisible(true);
-					//tempLblSect.setForeground(Color.GRAY);
-					//scrollPanel.add(tempLblSect);
-					//entryLabels.add(tempLblSect);
-				//}
-			//}
 			
 			incrementCheckBoxLocation();
 		}
