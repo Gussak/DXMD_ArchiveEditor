@@ -38,10 +38,12 @@ public class MainGUI extends JPanel
 	
 	private int valueEntry_x, valueEntry_y;
 	
-	private float getEnvFloat(String strEnvVar) {
+	private float getEnvFloat(String strEnvVar,float fMin,float fMax) {
 		float f;
 		try {
 			f = Float.parseFloat(System.getenv(strEnvVar));
+			if(f<fMin)f=fMin;
+			if(f>fMax)f=fMax;
 			System.out.println("ENVVAR["+strEnvVar+"]:"+f);
 			return f;
 		} catch (Exception e) {
@@ -52,17 +54,27 @@ public class MainGUI extends JPanel
 	private boolean getEnvBool(String strEnvVar) {
 		String strVal=System.getenv(strEnvVar);
 		System.out.println("ENVVAR["+strEnvVar+"]:"+strVal);
-		if(strVal == "true")return true;
+		if(strVal.equals("true"))return true;
 		return false;
 	}
-	private float fontScaleEnv=getEnvFloat("fScale"); //ex.: fScale=0.75f java -jar ...
-	private float fontScale = fontScaleEnv > 0.0f ? fontScaleEnv : 1.0f;
-	private int fontA=(int)(20*fontScale);
-	private int fontB=(int)(14*fontScale);
-	private int fontC=(int)(18*fontScale);
-	private int fontD=(int)(24*fontScale);
+	
+	private int fixHeight(int i)
+	{
+		int iFixed = (int)(i*fontScale);
+		if(iFixed<25)iFixed=25;
+		return iFixed;
+	}
+	private int scaleFontSize(int i)
+	{
+		int iFixed = (int)(i*fontScale);
+		if(iFixed<10)iFixed=10;
+		return iFixed;
+	}
+	
+	private float fontScale=getEnvFloat("fScale",0.65f,1000.0f); //help:evnvar TODO:ISSUE: less than 0.65f will mess text field values, may be fixable
+	
 	private String strGameFile;
-	private Boolean bDarkTheme = getEnvBool("bDarkTheme");
+	private Boolean bDarkTheme = getEnvBool("bDarkTheme"); //help:evnvar true or false
 	
 	private JPanel scrollPanel;
 	private JButton btn_Select, btn_Default, btn_File, btn_Apply;   
@@ -97,7 +109,18 @@ public class MainGUI extends JPanel
 		entryValues = new ArrayList<JComponent>();
 		entryLabels = new ArrayList<JLabel>();
 		invalidValues = new ArrayList<JTextField>();
-		fillOptionDataDXMD();
+		
+		String strGameID="";
+		try { strGameID = System.getenv("strGameID"); } catch(Exception e) { } //help:evnvar
+		if(strGameID == null)
+			strGameID="DXMD";
+		System.out.println("ENVVAR[strGameID]:"+strGameID);
+		if(strGameID.equals("DXMD")) {
+			fillOptionDataDXMD();
+		} else {
+			System.out.println("ERROR: Unsupported game: '"+strGameID+"'");
+			System.exit(1);
+		}
 		
 		scrollPanel = new JPanel();
 		scrollPanel.setLayout(null);
@@ -106,13 +129,13 @@ public class MainGUI extends JPanel
 					 
 		
 		lbl_gameAddress = new JLabel("Address of Game.layer.1.all.archive File:");
-		lbl_gameAddress.setBounds(10, 0, 480, 50);
-		lbl_gameAddress.setFont(new Font("Courier New", Font.BOLD, fontA));
+		lbl_gameAddress.setBounds(10, 0, 480, fixHeight(50));
+		lbl_gameAddress.setFont(new Font("Courier New", Font.BOLD, scaleFontSize(20)));
 		add(lbl_gameAddress);
 		
 		btn_Select = new JButton("File Selector");
-		btn_Select.setFont(new Font("Courier New", Font.BOLD, fontA));
-		btn_Select.setBounds(660, 10, 175, 35); // left edge from left side of window, top edge from top of window, width, height
+		btn_Select.setFont(new Font("Courier New", Font.BOLD, scaleFontSize(20)));
+		btn_Select.setBounds(660, 10, 175, fixHeight(35)); // left edge from left side of window, top edge from top of window, width, height
 		btn_Select.addActionListener(actionEvent -> 
 		{	
 			System.out.println("INIT:"+strGameFile);
@@ -142,9 +165,9 @@ public class MainGUI extends JPanel
 		
 		jtf_FileAddress = new JTextField();
 		jtf_FileAddress.setEditable(false);
-		jtf_FileAddress.setBackground(bDarkTheme?Color.BLACK:Color.WHITE);
-		jtf_FileAddress.setBounds(10, 50, 825, 30);
-		jtf_FileAddress.setFont(new Font("Courier New", Font.PLAIN, fontB));
+		jtf_FileAddress.setBackground(bDarkTheme ? Color.BLACK : Color.WHITE);
+		jtf_FileAddress.setBounds(10, 50, 825, fixHeight(30));
+		jtf_FileAddress.setFont(new Font("Courier New", Font.PLAIN, scaleFontSize(14)));
 		add(jtf_FileAddress);
 		
 		
@@ -158,8 +181,8 @@ public class MainGUI extends JPanel
 			if (currentOption instanceof NumericOption) // Add a JTextField for a numeric input
 			{
 				JTextField tempTF = new JTextField();
-				tempTF.setBounds(valueEntry_x, valueEntry_y, 65, (int)(40*fontScale));
-				tempTF.setFont(new Font("Courier New", Font.BOLD, fontA));
+				tempTF.setBounds(valueEntry_x, valueEntry_y, 70, fixHeight(40)); // width from 65 to 70 to fit 65535 better at least in 0.65 scale
+				tempTF.setFont(new Font("Courier New", Font.BOLD, scaleFontSize(20)));
 				tempTF.setVisible(true);
 				tempTF.setEnabled(false);
 				tempTF.getDocument().addDocumentListener(new DocumentListener() 
@@ -191,7 +214,7 @@ public class MainGUI extends JPanel
 			else if (currentOption instanceof BooleanOption) // Add a checkbox for a boolean input
 			{
 				JCheckBox tempCB = new JCheckBox();
-				tempCB.setBounds(valueEntry_x + 25, valueEntry_y, 40, (int)(40*fontScale));
+				tempCB.setBounds(valueEntry_x + 25, valueEntry_y, 40, fixHeight(40));
 				tempCB.setVisible(true);
 				tempCB.setEnabled(false);
 				tempCB.addMouseListener(new java.awt.event.MouseAdapter()
@@ -210,15 +233,17 @@ public class MainGUI extends JPanel
 			}
 			else if (currentOption instanceof SectionLabelOption) // dummy, just a section separator
 			{
-				entryValues.add(new JLabel("DUMMY"));
+				entryValues.add(new JLabel("DUMMY")); //this is required to grant the index of entryValues will match optionData index
 			}
 				
 			JLabel tempLbl = new JLabel(currentOption.getOptionName());
-			tempLbl.setBounds(valueEntry_x + 75, valueEntry_y, 300, (int)(40*fontScale));
+			tempLbl.setBounds(valueEntry_x + 75, valueEntry_y, 300, fixHeight(40));
 //            tempLbl.setSize(100, 100);
-			tempLbl.setFont(new Font("Courier New", Font.PLAIN, fontA));
+			tempLbl.setFont(new Font("Courier New", Font.PLAIN, scaleFontSize(20)));
 			tempLbl.setVisible(true);
 			tempLbl.setForeground(Color.GRAY);
+			if(!currentOption.isData())
+				tempLbl.setForeground(Color.CYAN);
 			tempLbl.addMouseListener(new java.awt.event.MouseAdapter()
 			{
 				public void mouseEntered(java.awt.event.MouseEvent evt) 
@@ -245,8 +270,8 @@ public class MainGUI extends JPanel
 		
 		// Description text area section
 		descTextArea = new JTextArea();
-		descTextArea.setBounds(10, 500, 825, 85);
-		descTextArea.setFont(new Font("Courier New", Font.PLAIN, fontC));
+		descTextArea.setBounds(10, 500, 825, fixHeight(85));
+		descTextArea.setFont(new Font("Courier New", Font.PLAIN, scaleFontSize(18)));
 		descTextArea.setLineWrap(true);
 		descTextArea.setWrapStyleWord(true); // Needed for the line wrap to actually work
 		descTextArea.setFocusable(false);
@@ -254,8 +279,8 @@ public class MainGUI extends JPanel
 		
 		
 		btn_Default = new JButton("Default Values");
-		btn_Default.setFont(new Font("Courier New", Font.BOLD, fontC));
-		btn_Default.setBounds(10, 600, 220, (int)(50*fontScale)); // left edge from left side of window, top edge from top of window, width, height
+		btn_Default.setFont(new Font("Courier New", Font.BOLD, scaleFontSize(18)));
+		btn_Default.setBounds(10, 600, 220, fixHeight(50)); // left edge from left side of window, top edge from top of window, width, height
 		btn_Default.setEnabled(false);
 		btn_Default.addActionListener(actionEvent ->
 		{        	
@@ -265,8 +290,8 @@ public class MainGUI extends JPanel
 		
 		
 		btn_File = new JButton("Current File Values");
-		btn_File.setFont(new Font("Courier New", Font.BOLD, fontC));
-		btn_File.setBounds(240, 600, 220, (int)(50*fontScale)); // left edge from left side of window, top edge from top of window, width, height
+		btn_File.setFont(new Font("Courier New", Font.BOLD, scaleFontSize(18)));
+		btn_File.setBounds(240, 600, 220, fixHeight(50)); // left edge from left side of window, top edge from top of window, width, height
 		btn_File.setEnabled(false);
 		btn_File.addActionListener(actionEvent ->
 		{        	
@@ -276,8 +301,8 @@ public class MainGUI extends JPanel
 		
 		
 		btn_Apply = new JButton("Apply");
-		btn_Apply.setFont(new Font("Courier New", Font.BOLD, fontD));
-		btn_Apply.setBounds(670, 600, 150, (int)(50*fontScale)); // left edge from left side of window, top edge from top of window, width, height
+		btn_Apply.setFont(new Font("Courier New", Font.BOLD, scaleFontSize(24)));
+		btn_Apply.setBounds(670, 600, 150, fixHeight(50)); // left edge from left side of window, top edge from top of window, width, height
 		btn_Apply.addActionListener(actionEvent ->
 		{        	
 			try 
@@ -308,7 +333,7 @@ public class MainGUI extends JPanel
 			if (invalidValues.contains(tempTF))
 			{
 				invalidValues.remove(tempTF);
-				tempTF.setForeground(bDarkTheme?Color.WHITE:Color.BLACK);
+				tempTF.setForeground(bDarkTheme ? Color.WHITE : Color.BLACK);
 			}            		
 		} 
 		handleApplyButtonEnabled();
@@ -326,7 +351,7 @@ public class MainGUI extends JPanel
 			else
 			{
 				valueEntry_x = 10;
-				valueEntry_y += (int)(40*fontScale);        
+				valueEntry_y += fixHeight(40);        
 			}
 	}
 	
@@ -339,7 +364,8 @@ public class MainGUI extends JPanel
 		
 		for (JLabel tempLabel : entryLabels)
 		{
-			tempLabel.setForeground(bDarkTheme?Color.WHITE:Color.BLACK);
+			if(!tempLabel.getText().startsWith(strSectionInit))
+				tempLabel.setForeground(bDarkTheme ? Color.LIGHT_GRAY : Color.BLACK);
 		}
 		
 		btn_Default.setEnabled(true);
@@ -388,16 +414,17 @@ public class MainGUI extends JPanel
 			btn_Apply.setEnabled(true);
 	}
 	
+	private String strSectionInit="> ";
 	private void addSection(String str)
 	{
 		if(optionData.size()%2==1)optionData.add(new SectionLabelOption(""));
-		optionData.add(new SectionLabelOption(str));
+		optionData.add(new SectionLabelOption(strSectionInit+str));
 		optionData.add(new SectionLabelOption(""));
 	}
 	
 	private void fillOptionDataDXMD()
 	{
-		addSection("_______ Experience Gain _______");
+		addSection("Experience Gain: Hacking");
 		
 		// Note: final parameter given should be the default value
 		optionData.add(new ShortOption(setUpLongAL(5401405), "XP for lvl. 1 Hack", "Sets the amount of XP received from hacking a level 1 device. Range:0-65535", 25));
@@ -407,11 +434,14 @@ public class MainGUI extends JPanel
 		optionData.add(new ShortOption(setUpLongAL(5401501), "XP for lvl. 5 Hack", "Sets the amount of XP received from hacking a level 5 device. Range:0-65535", 125));
 		optionData.add(new ShortOption(setUpLongAL(5401525), "XP for First Try Hack", "Sets the amount of XP received from hacking a device on your first try. Range:0-65535", 5));
 		
+		
+		addSection("Experience Gain: Combat");
+		
 		optionData.add(new ShortOption(setUpLongAL(5399013, 5403213, 5404333, 5405805), "XP for Headshot", "Sets the amount of XP received from a headshot kill. Range:0-65535", 10));
 		optionData.add(new ShortOption(setUpLongAL(5398989, 5403189, 5404309, 5405781), "XP for Non-Lethal", "Sets the amount of XP received from a non-lethal takedown (merciful soul). Range:0-65535", 20));
 		
 		
-		addSection("_______ Item's price _______");
+		addSection("Item's price: Other");
 		
 		optionData.add(new ShortOption(setUpLongAL(7736149), "Praxis Shop Cost", "Sets the amount credits a Praxis kit will cost in a store. Range:0-65535", 10000));
 		optionData.add(new ShortOption(setUpLongAL(4570325), "Biocell Shop Cost", "Sets the amount credits a biocell will cost in a store. Range:0-65535", 200));
@@ -423,6 +453,9 @@ public class MainGUI extends JPanel
 		optionData.add(new ShortOption(setUpLongAL(5853429), "Nanoblade Ammo Shop Cost", "Sets the amount credits a single Nanoblade ammo will cost in a store. This is multiplied by 8 for the pack. Range:0-65535", 200));
 		optionData.add(new ShortOption(setUpLongAL(5865149), "Weapon Part Shop Cost", "Sets the amount credits a single weapon part will cost in a store. This is multiplied for the pack. Range:0-65535", 5));
 		
+		
+		addSection("Item's price: Software");
+		
 		optionData.add(new ShortOption(setUpLongAL(6789165), "Reveal Shop Cost", "Sets the amount credits a Reveal software will cost in a store. Range:0-65535", 250));
 		optionData.add(new ShortOption(setUpLongAL(6789837), "Stealth Shop Cost", "Sets the amount credits a Stealth software will cost in a store. Range:0-65535", 250));
 		optionData.add(new ShortOption(setUpLongAL(6790509), "Nuke Shop Cost", "Sets the amount credits a Nuke software will cost in a store. Range:0-65535", 150));
@@ -431,7 +464,7 @@ public class MainGUI extends JPanel
 		optionData.add(new ShortOption(setUpLongAL(6792525), "Overclock Shop Cost", "Sets the amount credits an Overclock software will cost in a store. Range:0-65535", 200));
 		
 		
-		addSection("_______ Inventory: Items' Width _______");
+		addSection("Inventory: Items' Width");
 		
 		optionData.add(new InventoryXOption(setUpLongAL(6784805), "Sniper Width", "Sets the width of the sniper rifle in the inventory (number of tiles). Range:0-16", 7));
 		optionData.add(new InventoryXOption(setUpLongAL(4936557), "Tranquilizer Rifle Width", "Sets the width of the tranquilizer rifle in the inventory (number of tiles). Range:0-16", 7));
@@ -442,7 +475,7 @@ public class MainGUI extends JPanel
 		optionData.add(new InventoryXOption(setUpLongAL(4886637), "Combat Rifle Width", "Sets the width of the combat rifle in the inventory (number of tiles). Range:0-16", 5));
 		
 		
-		addSection("_______ Items' Craft Cost _______");
+		addSection("Items' Craft Cost");
 		
 		optionData.add(new ShortOption(setUpLongAL(7562693), "Typhoon Ammo Crafting Cost", "Sets the amount weapons parts needed to craft a 3-pack of Typhoon ammo. Range:0-65535", 75));
 		optionData.add(new ShortOption(setUpLongAL(7557853), "Mine Template Crafting Cost", "Sets the amount weapons parts needed to craft a mine template. Range:0-65535", 75));
@@ -451,7 +484,8 @@ public class MainGUI extends JPanel
 		optionData.add(new ShortOption(setUpLongAL(6172733), "Nanoblade Crafting Cost", "Sets the amount weapons parts needed to craft a Nanoblade ammo pack. Range:0-65535", 75));
 		optionData.add(new ShortOption(setUpLongAL(7441693), "Tesla Ammo Crafting Cost", "Sets the amount weapons parts needed to craft a Tesla ammo pack. Range:0-65535", 75));
 		
-		addSection("_______ Inventory: Items Stack Size _______");
+		
+		addSection("Inventory: Items' Stack Size");
 		
 		optionData.add(new ShortOption(setUpLongAL(4264429, 4265549, 4267085, 4268245, 4269245, 4270501, 4285101, 4286237, 4287013, 4288053, 4288885, 4290013, 6615853, 6616941, 6966957, 7525853), "Ammo Stack", "Sets the max inventory stack size of weapon ammo (grenade launcher excluded). Range:0-65535", 200));
 		optionData.add(new ShortOption(setUpLongAL(4282117, 4282861, 4283605, 4284349), "Grenade Ammo Stack", "Sets the max inventory stack size of grenade launcher ammo. Range:0-65535", 10));
@@ -461,7 +495,7 @@ public class MainGUI extends JPanel
 		optionData.add(new ShortOption(setUpLongAL(5796213), "Hypostim Stack", "Sets the max inventory stack size of hypostims. Range:0-65535", 25));    	
 		
 		
-		addSection("_______ Special Toggles List _______");
+		addSection("Special Toggles List");
 		
 		optionData.add(new BooleanOption(setUpLongAL(7413191, 7413192), setUpShortAL(4, 66), setUpShortAL(0, 0), "No Takedown Cost", "Makes takedowns have no energy consumption.", false));
 		optionData.add(new BooleanOption(setUpLongAL(6611045, 7589029, 7589797, 7704685, 7718621, 7719573, 7721117, 7722581, 7723565, 7727101),  setUpShortAL(10, 10, 10, 10, 10, 10, 10, 10, 10, 10), setUpShortAL(0, 0, 0, 0, 0, 0, 0, 0, 0, 0), 
@@ -472,10 +506,10 @@ public class MainGUI extends JPanel
 		//optionData.add(new InventoryXOption(setUpLongAL(7646673), "Ammo 10mm Regular Width", "Width of 10mm (pistol) Regular ammo box. Range:0-16", 2)); //binary pos hint:"10mm (pistol) Regular"+4
 		//optionData.add(new InventoryXOption(setUpLongAL(7647561), "Ammo 10mm Emp Width", "Width of 10mm (pistol) Emp ammo box. Range:0-16", 2)); //binary pos hint:"10mm (pistol) Emp"+4
 		
-		///////                                                                                       ////
-		//////                                                                                       /////
-		// based on hints from: https://www.grognougnou.com/mods-tutorials-deus-ex-mankind-divided.html //
-		////                                                                                       ///////
+		///////                                                                                           ///////
+		//////                                                                                           ///////
+		// based also on hints from: https://www.grognougnou.com/mods-tutorials-deus-ex-mankind-divided.html //
+		////                                                                                           ///////
 		optionData.add(new BooleanOption(setUpLongAL(6578429,6578453,6579061,6579085,6579109), setUpShortAL(1,1,1,1,1), setUpShortAL(0,0,0,0,0), "Aug Energy Recharge Rate OFF", "Disables augmentation energy RechargeRate lvl1 even if it shows being active", false)); //hint: 05 ... 01 near aug name for the 3 levels
 		optionData.add(new BooleanOption(setUpLongAL(6580989,4787093,4787117), setUpShortAL(1,1,1), setUpShortAL(0,0,0), "Aug C. Defibrillator OFF", "Disables free initial augmentation CardiovertorDefibrillator, that is the auto healing", false)); //hint: 05 ... 01 near aug name for the 3 levels
 		
