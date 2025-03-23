@@ -15,7 +15,8 @@ public class ExecuteChanges
 		
 		for (Option option : optionData)
 		{
-			option.makeChanges(accessGameFile);
+			if(option.isData())
+				option.makeChanges(accessGameFile);
 		}			
 		
 		Launcher.showDoneMessage();		

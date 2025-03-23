@@ -34,7 +34,7 @@ public class FileAnalyzer
 				accessGameFile.seek(option.getAddresses().get(0)); // Operating under the assumption that they are all going to be the same				
 				((NumericOption) option).setCurrentFileValue(signedByteToUShort(accessGameFile.readByte()));
 			}
-			else
+			else if (option instanceof BooleanOption)
 			{
 				accessGameFile.seek(option.getAddresses().get(0)); // Operating under the assumption that any changes already made will be done by this program
 				

@@ -16,4 +16,5 @@ public abstract class Option
 	
 	public abstract void makeChanges(RandomAccessFile accessGameFile) throws IOException;
 	
+	public boolean isData() {return true;}
 }

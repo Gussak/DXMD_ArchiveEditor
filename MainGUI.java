@@ -17,12 +17,17 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.SwingConstants;
+import javax.swing.JSeparator;
+
+import java.io.RandomAccessFile;
 
 import options.BooleanOption;
 import options.InventoryXOption;
 import options.NumericOption;
 import options.Option;
 import options.ShortOption;
+import options.SectionLabelOption;
 
 public class MainGUI extends JPanel 
 {	
@@ -76,7 +81,7 @@ public class MainGUI extends JPanel
 		{
 			if (entryValues.get(i) instanceof JTextField)
 				((NumericOption) optionData.get(i)).setNewValue(Integer.parseInt(((JTextField) entryValues.get(i)).getText()));
-			else 
+			else if (entryValues.get(i) instanceof JCheckBox)
 				((BooleanOption) optionData.get(i)).setNewValue(((JCheckBox) entryValues.get(i)).isSelected());
 		}
 		
@@ -183,7 +188,7 @@ public class MainGUI extends JPanel
 				scrollPanel.add(tempTF);
 				entryValues.add(tempTF);
 			}
-			else // Add a checkbox for a boolean input
+			else if (currentOption instanceof BooleanOption) // Add a checkbox for a boolean input
 			{
 				JCheckBox tempCB = new JCheckBox();
 				tempCB.setBounds(valueEntry_x + 25, valueEntry_y, 40, (int)(40*fontScale));
@@ -202,6 +207,13 @@ public class MainGUI extends JPanel
 					});
 				scrollPanel.add(tempCB);
 				entryValues.add(tempCB);
+			}
+			else if (currentOption instanceof SectionLabelOption) // dummy, just a section separator
+			{
+				//scrollPanel.add(new JSeparator(SwingConstants.VERTICAL));
+				//scrollPanel.add(new JLabel(currentOption.getOptionName()));
+				scrollPanel.add(new JLabel("<><><><><><>"));
+				entryValues.add(new JLabel("<><><><><><>"));
 			}
 				
 			JLabel tempLbl = new JLabel(currentOption.getOptionName());
@@ -349,7 +361,7 @@ public class MainGUI extends JPanel
 			{
 				if (optionData.get(i) instanceof NumericOption)
 					((JTextField) entryValues.get(i)).setText(Integer.toString(((NumericOption) optionData.get(i)).getSpecificValue(value)));
-				else // BooleanOption then
+				else if (optionData.get(i) instanceof BooleanOption)
 					((JCheckBox) entryValues.get(i)).setSelected(((BooleanOption) optionData.get(i)).getSpecificValue(value));
 			}        
 	}
@@ -430,6 +442,8 @@ public class MainGUI extends JPanel
 		optionData.add(new ShortOption(setUpLongAL(4570277), "Biocell Stack", "Sets the max inventory stack size of Biocells. Range:0-65535", 25));
 		optionData.add(new ShortOption(setUpLongAL(4912973), "Painkiller Stack", "Sets the max inventory stack size of painkillers. Range:0-65535", 25));
 		optionData.add(new ShortOption(setUpLongAL(5796213), "Hypostim Stack", "Sets the max inventory stack size of hypostims. Range:0-65535", 25));    	
+		
+		optionData.add(new SectionLabelOption("_______ Toggle List _______"));
 		
 		optionData.add(new BooleanOption(setUpLongAL(7413191, 7413192), setUpShortAL(4, 66), setUpShortAL(0, 0), "No Takedown Cost", "Makes takedowns have no energy consumption.", false));
 		optionData.add(new BooleanOption(setUpLongAL(6611045, 7589029, 7589797, 7704685, 7718621, 7719573, 7721117, 7722581, 7723565, 7727101),  setUpShortAL(10, 10, 10, 10, 10, 10, 10, 10, 10, 10), setUpShortAL(0, 0, 0, 0, 0, 0, 0, 0, 0, 0), 
