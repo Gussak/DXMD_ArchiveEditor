@@ -12,7 +12,7 @@ or `jarAndRunIt.bat` in windows (ISSUE: help needed, I dont know how to code tha
 
 Run it with OpenJDK11: `java -jar DXMD_ArchiveEditor.jar`  
 
-Original file credits and permissions from: https://www.nexusmods.com/deusexmankinddivided/mods/18
+Original file credits and permissions from: https://www.nexusmods.com/deusexmankinddivided/mods/18 author https://next.nexusmods.com/profile/LightPower1
  
 	Credits and distribution permission
 	 
